@@ -7,7 +7,7 @@ import concurrent.futures
 
 '''To use: 
 
-python stackPhotosParallel.py <input_dir> <output_dir_base> <helicon_focus_path> <nconvert_path> <backup_dir_base>
+python stackPhotosParallel.py <input_dir> <output_dir_base> <helicon_focus_path> <nconvert_path> <backup_dir_base> <max_workers>
 
 The defaults are:
 input_dir = "D:/Unstacked/"
@@ -15,9 +15,10 @@ output_dir_base = "D:/Stacked/"
 helicon_focus_path = "C:/Program Files/Helicon Software/Helicon Focus 8/HeliconFocus.exe"
 nconvert_path = "C:/XnView/nconvert.exe"
 backup_dir_base = "D:/Backup_Permanent"
+max_workers = 4 # alter based on CPU core availability
 
 Written by Michele Wiseman of Oregon State University
-June 22nd, 2023
+October 23rd, 2023
 Version 1.0
 '''
 
@@ -26,7 +27,7 @@ output_dir_base = "D:/Stacked/"
 helicon_focus_path = "C:/Program Files/Helicon Software/Helicon Focus 8/HeliconFocus.exe"
 nconvert_path = "C:/XnView/nconvert.exe"
 backup_dir_base = "D:/Backup_Permanent"
-
+max_workers = 4
 
 def process_stack_group(input_dir, output_dir_base, helicon_focus_path, nconvert_path, backup_dir_base, experiment, date, tray, stack_group):
     ''' The function to process each stack group '''
@@ -81,7 +82,7 @@ def main():
     backup_dir_base = "D:/Backup_Permanent"
 
     # Using concurrent.futures to parallelize the stacking jobs
-    with concurrent.futures.ProcessPoolExecutor(max_workers=4) as executor:
+    with concurrent.futures.ProcessPoolExecutor(max_workers=max_workers) as executor:
         # Collecting all tasks to run in parallel
         tasks = [(
                  input_dir, output_dir_base, helicon_focus_path, nconvert_path, backup_dir_base, experiment, date, tray,
